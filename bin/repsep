@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ $1 =~ ^(pdf||pgf|png)$ ]]; then
+        AS_MODULE="${2%.*}"
+        OUT="${AS_MODULE}.${1}"
+        python -c "mymod = __import__(\"$AS_MODULE\"); import matplotlib.pyplot as plt; plt.savefig(\"$OUT\")"
+else
+	echo "Invalid subcommand `$1`" >&2
+	exit 1
+fi
