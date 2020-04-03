@@ -43,7 +43,7 @@ user@host $ emerge repsep_utils
 #### Manual
 If your distribution's package manager does not provide this package, you can install it manually, via:
 
-```
+```console
 user@host $ git clone git@github.com:TheChymera/repsep_utils.git /home/youruser/repsep_utils
 user@host $ su -
 root@host # cp -rf /home/youruser/repsep_utils/repsep /usr/share
