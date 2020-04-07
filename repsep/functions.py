@@ -86,6 +86,7 @@ def pytex_subfigs(scripts,
 	label='',
 	placement='[h]',
 	options_pre='',
+	options_pre_caption='',
 	options_post='',
 	data=[],
 	figure_format='pgf',
@@ -138,6 +139,8 @@ def pytex_subfigs(scripts,
 			)
 		subfigs += subfig
 		subfigs += '\\hfill\n'
+	if options_pre_caption:
+		subfigs += '{}\n'.format(options_pre_caption)
 	if caption:
 		subfigs += '\\caption{{{}}}\n'.format(caption)
 	if label:
