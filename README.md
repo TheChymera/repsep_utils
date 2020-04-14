@@ -37,7 +37,7 @@ This package is available via Portage (the package manager of Gentoo Linux, deri
 Upon enabling the overlay, the package can be emerged:
 
 ```console
-user@host $ emerge repsep_utils
+root@host # emerge repsep_utils
 ```
 
 #### Manual
