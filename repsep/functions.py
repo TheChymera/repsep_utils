@@ -46,8 +46,12 @@ def pytex_tab(
 	):
 	"""
 	Print a LaTeX formatted table (including outer table environment and additional options), based on a script which returns an inner tabular environment, or based on an inner tabular environment string.
-	Such scripts are best created using Pandas' `pd.to_latex()` function.
+	Such scripts outputs are best produced via Pandas' `pd.to_latex()` function.
 	"""
+
+	if not inner_tabular and not script:
+		raise ValueError('RepSeP\'s `pytex_fig()` requires you to pass a value to one of its `inner_tabular` and `script` parameters.')
+
 	import sys
 	try:
 		from StringIO import StringIO
