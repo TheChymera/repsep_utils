@@ -90,12 +90,13 @@ def pytex_subfigs(scripts,
 	options_post='',
 	data=[],
 	figure_format='pgf',
+	environment='figure*'
 	):
 	"""
 	Executes a series of Python scripts, grabbing the figures individually, and placing them as subfigures in a figure environment
 	"""
 	pytex.add_dependencies(*data)
-	subfigs = '\\begin{{figure*}}{}\n'.format(placement)
+	subfigs = '\\begin{{{}}}{}\n'.format(environment, placement)
 	if options_pre:
 		subfigs += '{}\n'.format(options_pre)
 	for script in scripts:
@@ -147,7 +148,7 @@ def pytex_subfigs(scripts,
 		subfigs += '\\label{{{}}}\n'.format(label)
 	if options_post:
 		subfigs += '{}\n'.format(options_post)
-	subfigs += '\\end{figure*}'
+	subfigs += '\\end{{{}}}'.format(environment)
 	return subfigs
 
 def pytex_fig(script,
