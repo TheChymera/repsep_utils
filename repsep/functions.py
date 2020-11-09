@@ -252,7 +252,7 @@ def latex_environment(name,
 	"""
 	Simple helper function to write the `\begin...\end` LaTeX block.
 	"""
-	return '\\begin{%s}%s%s%s\\end{%s}' % (name, options_pre, content, options_post, name)
+	return '\\begin{%s}\n%s%s%s\\end{%s}\n' % (name, options_pre, content, options_post, name)
 
 def latex_table(table,
 	caption='',
