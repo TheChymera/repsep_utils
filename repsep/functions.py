@@ -14,6 +14,8 @@ fig_count = 0
 # https://ctan.math.utah.edu/ctan/tex-archive/macros/latex/contrib/pythontex/pythontex.pdf
 if not JOBNAME:
 	raise NameError("Plase set the job name explicitly in your document header. This is usually the name of the master file, e.g. 'article'")
+else:
+	JOBDIR='pythontex-files-{}'.format(JOBNAME)
 
 def pytex_printonly(script, data=''):
 	import sys
@@ -232,7 +234,7 @@ def save_fig(name='', legend=False, fig=None, ext='.pgf',):
 		global fig_count
 		# Need underscores or other delimiters between `input_*` variables
 		# to ensure uniqueness
-		name = 'pythontex-files-{}/auto_fig_{}-{}'.format(JOBNAME, pytex.id, fig_count)
+		name = 'auto_fig_{}-{}'.format(pytex.id, fig_count)
 		fig_count += 1
 	else:
 		if len(name) > 4 and name[:-4] in ['.pdf', '.pgf', '.svg', '.png', '.jpg']:
@@ -241,7 +243,7 @@ def save_fig(name='', legend=False, fig=None, ext='.pgf',):
 	# Get current figure if figure isn't specified
 	if not fig:
 		fig = gcf()
-	fig.savefig(name + ext)
+	fig.savefig(JOBDIR + '/' + name + ext)
 	fig.clear()
 	plt.cla()
 	plt.clf()
@@ -293,11 +295,13 @@ def latex_figure(name, environment,
 	if not name:
 		name = save_fig()
 	content = '\\centering\n'
+	# For PGF we need to separate the JOBDIR variable in order to put it in the first argument to the `\import` command from the import package.
+	# This is because PGF can dynamically link to embedded elements which are referenced via a relative path.
 	if figure_format == 'pgf':
 		content += '\\makeatletter\\let\\input@path\\Ginput@path\\makeatother\n'
-		content += '\\input{{{}.{}}}\n'.format(name, figure_format)
+		content += '\\import{{{}}}{{{}.{}}}\n'.format(JOBDIR, name, figure_format)
 	elif figure_format == 'pdf':
-		content += '\\includegraphics{{{}}}\n'.format(name)
+		content += '\\includegraphics{{{}/{}}}\n'.format(JOBDIR, name)
 	if options_pre_caption:
 		content+= '{}\n'.format(options_pre_caption)
 	if not label:
