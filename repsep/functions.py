@@ -9,6 +9,11 @@ from lib import boilerplate
 fig_label_prefix = 'fig'
 # Track figure numbers to create unique auto-generated names
 fig_count = 0
+# Set this in the pythontexcustomcode of the document, else the dir won't exist at runtime.
+# Ideally this would be dynamically fetched from the sanitized jobname described in the PythonTeX documentation:
+# https://ctan.math.utah.edu/ctan/tex-archive/macros/latex/contrib/pythontex/pythontex.pdf
+if not JOBNAME:
+	raise NameError("Plase set the job name explicitly in your document header. This is usually the name of the master file, e.g. 'article'")
 
 def pytex_printonly(script, data=''):
 	import sys
@@ -216,7 +221,7 @@ def figure_by_path(figure_path,textheight_frac=1,caption=None,label=None):
 	latex_code += "\\end{figure}\n"
 	return latex_code
 
-def save_fig(name='', legend=False, fig=None, ext='.pgf'):
+def save_fig(name='', legend=False, fig=None, ext='.pgf',):
 	'''
 	Save the current figure (or `fig`) to file using `plt.save_fig()`.
 	If called with no arguments, automatically generate a unique filename.
@@ -227,7 +232,7 @@ def save_fig(name='', legend=False, fig=None, ext='.pgf'):
 		global fig_count
 		# Need underscores or other delimiters between `input_*` variables
 		# to ensure uniqueness
-		name = 'auto_fig_{}-{}'.format(pytex.id, fig_count)
+		name = 'pythontex-files-{}/auto_fig_{}-{}'.format(JOBNAME, pytex.id, fig_count)
 		fig_count += 1
 	else:
 		if len(name) > 4 and name[:-4] in ['.pdf', '.pgf', '.svg', '.png', '.jpg']:
@@ -252,7 +257,7 @@ def latex_environment(name,
 	"""
 	Simple helper function to write the `\begin...\end` LaTeX block.
 	"""
-	return '\\begin{%s}\n%s%s%s\\end{%s}\n' % (name, options_pre, content, options_post, name)
+	return '\\begin{%s}%s%s%s\\end{%s}' % (name, options_pre, content, options_post, name)
 
 def latex_table(table,
 	caption='',
